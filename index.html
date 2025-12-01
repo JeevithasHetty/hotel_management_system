@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hotel Management Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+                  url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: rgba(0, 0, 0, 0.85);
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    }
+
+    nav h1 {
+      font-size: 1.8rem;
+      color: #FFD700;
+    }
+
+    nav .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      position: relative;
+    }
+
+    .dropdown {
+      position: relative;
+    }
+
+    .dropbtn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      padding: 0.5rem 1rem;
+    }
+
+    .dropbtn:hover {
+      color: #FFD700;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      background-color: rgba(0, 0, 0, 0.9);
+      min-width: 200px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
+      z-index: 1;
+      border-radius: 8px;
+    }
+
+    .dropdown-content a {
+      color: #FFD700;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #333;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .hero {
+      text-align: center;
+      margin-top: 6rem;
+    }
+
+    .hero h2 {
+      font-size: 3rem;
+      color: #FFD700;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      margin-top: 0.5rem;
+      color: #f0e9e9;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <h1>Royal Orchid Hotel</h1>
+    <div class="nav-links">
+      <div class="dropdown">
+        <button class="dropbtn">User</button>
+        <div class="dropdown-content">
+          <a href="rooms.html">Rooms</a>
+          <a href="guest.html">Guest Management</a>
+          <a href="booking.html">Booking</a>
+          <a href="payment.html">Payment</a>
+        </div>
+      </div>
+
+      <div class="dropdown">
+        <button class="dropbtn">Admin</button>
+        <div class="dropdown-content">
+          <a href="add_room.html">Add Room</a>
+          <a href="staff.html">Staff Management</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <h2>Welcome to Royal Orchid Hotel</h2>
+    <p>Experience luxury and seamless management at your fingertips</p>
+  </section>
+</body>
+</html>

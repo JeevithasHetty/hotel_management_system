@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Booking</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: url('img/img3.png') no-repeat center center fixed;
+      background-size: cover;
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: -1;
+    }
+
+    h2 {
+      color: #f3f2eefc;
+      font-size: 42px;
+      margin-bottom: 25px;
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+    }
+
+    form {
+      background: rgba(148, 142, 142, 0.911);
+      backdrop-filter: blur(15px);
+      padding: 35px 40px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      width: 500px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      color: #fff;
+    }
+
+    input[type="number"],
+    input[type="text"],
+    input[type="date"] {
+      padding: 12px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 8px;
+      font-size: 16px;
+      background-color: rgba(255, 255, 255, 0.9);
+      color: #333;
+    }
+
+    input:focus {
+      border-color: #4CAF50;
+      outline: none;
+    }
+
+    button {
+      padding: 14px;
+      background-color: #4CAF50;
+      color: white;
+      font-size: 18px;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    button:hover {
+      background-color: #388e3c;
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 480px) {
+      form {
+        width: 90%;
+        padding: 25px 20px;
+      }
+
+      h2 {
+        font-size: 32px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h2>Booking Form</h2>
+  <form id="bookingForm">
+    <input type="number" id="guest_id" placeholder="Guest ID" required>
+    <input type="text" id="room_number" placeholder="Room Number" required>
+    <input type="date" id="check_in" required>
+    <input type="date" id="check_out" required>
+    <button type="submit">Book Now</button>
+  </form>
+
+  <script>
+    document.getElementById('bookingForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const guest_id = document.getElementById('guest_id').value;
+      const room_number = document.getElementById('room_number').value;
+      const check_in = document.getElementById('check_in').value;
+      const check_out = document.getElementById('check_out').value;
+
+      try {
+        const res = await fetch('/api/bookings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ guest_id, room_number, check_in, check_out })
+        });
+
+        const data = await res.json();
+        alert('Booking created with ID: ' + data.id);
+        document.getElementById('bookingForm').reset();
+      } catch (err) {
+        console.error('Booking failed:', err);
+        alert('Booking failed. Please try again.');
+      }
+    });
+  </script>
+</body>
+</html>

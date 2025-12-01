@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Staff Form</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(
+        rgba(3, 1, 1, 0.3), 
+        rgba(2, 2, 2, 0.5)
+      ), 
+      url('img/img7.png') no-repeat center center fixed;
+      background-size: cover;
+      color: #e2d4d4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px;
+      min-height: 100vh;
+    }
+
+    form {
+      background: rgba(151, 158, 164, 0.793);
+      padding: 30px 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 500px;
+      width: 100%;
+    }
+
+    h2 {
+      color: white;
+      margin-bottom: 25px;
+      text-align: center;
+      font-size: 2.5rem;
+      font-style: italic;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 25px;
+      box-sizing: border-box;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #0de266;
+      color: rgb(8, 7, 7);
+      border: none;
+      border-radius: 6px;
+      font-size: 25px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #1e874b;
+    }
+  </style>
+</head>
+<body>
+  <h2>Add Staff Member</h2>
+  <form id="staffForm">
+    <input type="text" name="name" placeholder="Name" required /><br>
+    <input type="text" name="role" placeholder="Role" /><br>
+    <input type="text" name="contact" placeholder="Contact" /><br>
+    <button type="submit">Add Staff</button>
+  </form>
+
+  <script src="staff.js"></script>
+</body>
+</html>

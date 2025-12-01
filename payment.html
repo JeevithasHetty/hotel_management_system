@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Payments</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: url('img/img6.png') no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      position: relative;
+      color: #fff;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: -1;
+    }
+
+    h2 {
+      font-size: 40px;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 30px;
+      color: #ffffff;
+      text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.7);
+    }
+
+    form {
+      background-color: rgba(255, 255, 255, 0.97);
+      padding: 35px 40px;
+      border-radius: 16px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+      width: 100%;
+      max-width: 500px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    input[type="number"],
+    input[type="date"] {
+      padding: 14px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      transition: border-color 0.3s ease;
+    }
+
+    input:focus {
+      border-color: #4CAF50;
+      outline: none;
+    }
+
+    button {
+      background-color: #2196F3;
+      color: #fff;
+      padding: 14px;
+      font-size: 17px;
+      font-weight: 500;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    button:hover {
+      background-color: #1976D2;
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 480px) {
+      h2 {
+        font-size: 28px;
+      }
+
+      form {
+        padding: 25px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h2>Payment Form</h2>
+  <form id="paymentForm">
+    <input type="number" id="booking_id" placeholder="Booking ID" required>
+    <input type="number" id="amount" placeholder="Amount" required>
+    <input type="date" id="payment_date" required>
+    <button type="submit">Submit Payment</button>
+  </form>
+
+  <script>
+    document.getElementById('paymentForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const booking_id = document.getElementById('booking_id').value;
+      const amount = document.getElementById('amount').value;
+      const payment_date = document.getElementById('payment_date').value;
+
+      try {
+        const res = await fetch('/api/payments', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ booking_id, amount, payment_date })
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          alert('Payment recorded successfully!');
+          document.getElementById('paymentForm').reset();
+        } else {
+          alert('Error: ' + data.error);
+        }
+      } catch (err) {
+        console.error('Submission failed', err);
+        alert('Submission failed. Please try again.');
+      }
+    });
+  </script>
+</body>
+</html>

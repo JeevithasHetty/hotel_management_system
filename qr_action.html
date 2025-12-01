@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>QR Action</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; text-align: center; }
+    button { padding: 10px 20px; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h2 id="message">Processing...</h2>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const action = urlParams.get('action');
+    const room = urlParams.get('room');
+
+    if (!action || !room) {
+      document.getElementById('message').textContent = "Invalid QR code data.";
+    } else {
+      fetch(`/api/rooms/${action}/${room}`, { method: 'PUT' })
+        .then(res => res.json())
+        .then(data => {
+          document.getElementById('message').textContent = data.message;
+          setTimeout(() => {
+            window.location.href = '/available_rooms.html';
+          }, 2000);
+        })
+        .catch(() => {
+          document.getElementById('message').textContent = "Error processing request.";
+        });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Add Room</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: url('img/img2.png') no-repeat center center fixed;
+      background-size: cover;
+      position: relative;
+      min-height: 100vh;
+      color: #fff;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0.55);
+      z-index: -1;
+    }
+
+    h1, h2 {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    form, .room-list {
+      max-width: 500px;
+      margin: 20px auto;
+      background: rgba(206, 178, 178, 0.456);
+      backdrop-filter: blur(12px);
+      padding: 30px 25px;
+      border-radius: 15px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin: 12px 0;
+      border-radius: 8px;
+      border: none;
+      font-size: 1rem;
+      font-family: inherit;
+    }
+
+    input {
+      background: rgba(255, 255, 255, 0.9);
+      color: #333;
+    }
+
+    button {
+      background-color: #00c2ff;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #008bb5;
+    }
+
+    .room-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .room-item span {
+      flex: 1;
+      color: #fff;
+    }
+
+    .delete-btn {
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 12px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.3s ease;
+    }
+
+    .delete-btn:hover {
+      background-color: #c0392b;
+    }
+
+    #statusMessage {
+      text-align: center;
+      font-weight: 500;
+      color: #00ffcc;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Add New Room</h1>
+
+  <form id="addRoomForm">
+    <input type="text" id="room_number" placeholder="Room Number" required />
+    <input type="text" id="type" placeholder="Room Type" required />
+    <input type="number" id="price" placeholder="Price" required />
+    <button type="submit">Add Room</button>
+  </form>
+
+  <p id="statusMessage"></p>
+
+  <h2>Room List</h2>
+  <div id="roomList" class="room-list"></div>
+
+  <script>
+    function loadRooms() {
+      fetch('/api/rooms')
+        .then(res => res.json())
+        .then(data => {
+          const list = document.getElementById('roomList');
+          list.innerHTML = '';
+          data.forEach(room => {
+            const div = document.createElement('div');
+            div.className = 'room-item';
+            div.innerHTML = `
+              <span>${room.room_number} - ${room.type} - ₹${room.price}</span>
+              <button class="delete-btn" onclick="deleteRoom('${room.room_number}')">Delete</button>
+            `;
+            list.appendChild(div);
+          });
+        });
+    }
+
+    document.getElementById('addRoomForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const room_number = document.getElementById('room_number').value;
+      const type = document.getElementById('type').value;
+      const price = document.getElementById('price').value;
+
+      fetch('/api/rooms/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ room_number, type, price })
+      })
+        .then(res => res.json())
+        .then(data => {
+          document.getElementById('statusMessage').textContent = data.message || 'Room added!';
+          document.getElementById('addRoomForm').reset();
+          loadRooms();
+        });
+    });
+
+    function deleteRoom(room_number) {
+      if (!confirm(`Are you sure you want to delete room ${room_number}?`)) return;
+
+      fetch(`/api/rooms/${room_number}`, { method: 'DELETE' })
+        .then(res => res.json())
+        .then(data => {
+          alert(data.message || 'Room deleted!');
+          loadRooms();
+        });
+    }
+
+    window.onload = loadRooms;
+  </script>
+</body>
+</html>

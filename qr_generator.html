@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>QR Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+    }
+    button {
+      padding: 0.6rem 1.2rem;
+      font-size: 1rem;
+      margin: 0.5rem;
+      cursor: pointer;
+    }
+    #qr-container {
+      margin-top: 1.5rem;
+    }
+    #qr-code {
+      max-width: 300px;
+      border: 2px solid #333;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>QR Generator</h1>
+
+  <button onclick="generateQR('checkin')">QR Check-in</button>
+  <button onclick="generateQR('checkout')">QR Check-out</button>
+
+  <div id="qr-container">
+    <h3>QR Code:</h3>
+    <img id="qr-code" src="" alt="QR code will appear here" />
+  </div>
+
+  <script>
+    async function generateQR(action) {
+      const room = 101; // you can change this dynamically if needed
+      const res = await fetch(`/generate-qr?action=${action}&room=${room}`);
+      const data = await res.json();
+      const qrImg = document.getElementById("qr-code");
+      qrImg.src = data.qr;
+    }
+  </script>
+</body>
+</html>
