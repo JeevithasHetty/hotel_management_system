@@ -2,6 +2,17 @@ const express = require('express');
 const router = express.Router();
 const db = require('./db');
 
+// GET all bookings
+router.get('/', (req, res) => {
+  db.query('SELECT * FROM bookings', (err, results) => {
+    if (err) {
+      console.error('Error fetching bookings:', err);
+      return res.status(500).json({ error: 'Database error' });
+    }
+    res.json(results);
+  });
+});
+
 // CREATE a new booking
 router.post('/', (req, res) => {
   const { guest_id, room_number, check_in, check_out } = req.body;

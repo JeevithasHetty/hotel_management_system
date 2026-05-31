@@ -64,7 +64,7 @@ router.get('/qr/:room_number/:action', (req, res) => {
     return res.status(400).json({ error: 'Invalid action. Use checkin or checkout.' });
   }
 
-  const serverIP = '192.168.96.44'; // Change if your local IP is different
+  const serverIP = process.env.SERVER_IP || '192.168.96.44';
   const qrURL = `http://${serverIP}:3000/qr_action.html?action=${action}&room=${room_number}`;
 
   QRCode.toDataURL(qrURL, (err, url) => {
@@ -72,6 +72,7 @@ router.get('/qr/:room_number/:action', (req, res) => {
     res.json({ qr: url });
   });
 });
+
 // Delete a room by room_number
 router.delete('/:room_number', (req, res) => {
   const room_number = req.params.room_number;
@@ -88,6 +89,5 @@ router.delete('/:room_number', (req, res) => {
     res.json({ message: `Room ${room_number} deleted successfully.` });
   });
 });
-
 
 module.exports = router;

@@ -1,9 +1,19 @@
-// payment.js
 const express = require('express');
 const router = express.Router();
 const db = require('./db');
 
-// POST /api/payments
+// GET all payments
+router.get('/', (req, res) => {
+  db.query('SELECT * FROM payments', (err, results) => {
+    if (err) {
+      console.error('Error fetching payments:', err);
+      return res.status(500).json({ error: 'Database error' });
+    }
+    res.json(results);
+  });
+});
+
+// POST - Record a new payment
 router.post('/', (req, res) => {
   const { booking_id, amount, payment_date } = req.body;
 
@@ -16,7 +26,6 @@ router.post('/', (req, res) => {
     VALUES (?, ?, ?)
   `;
 
-  // If user didn't provide a date, we can pass NULL to use DEFAULT CURRENT_DATE
   const dateToUse = payment_date || null;
 
   db.query(query, [booking_id, amount, dateToUse], (err, result) => {
@@ -24,7 +33,7 @@ router.post('/', (req, res) => {
       console.error('Error inserting payment:', err);
       return res.status(500).json({ error: 'Failed to record payment' });
     }
-    res.status(200).json({ message: 'Payment recorded successfully' });
+    res.status(201).json({ message: 'Payment recorded successfully', id: result.insertId });
   });
 });
 
